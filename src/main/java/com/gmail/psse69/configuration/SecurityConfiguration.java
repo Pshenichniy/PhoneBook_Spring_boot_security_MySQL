@@ -32,6 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${spring.queries.roles-query}")
     private String rolesQuery;
 
+//    @Value("${spring.queries.contacts-query}")
+//    private String contactQuery;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
@@ -55,6 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/admin/home")
+                //.successForwardUrl("/admin/contact")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()

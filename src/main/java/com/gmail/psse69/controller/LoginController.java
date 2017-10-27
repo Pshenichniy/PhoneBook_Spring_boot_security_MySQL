@@ -1,6 +1,9 @@
 package com.gmail.psse69.controller;
 
-import javax.validation.Valid;
+import com.gmail.psse69.model.Contact;
+import com.gmail.psse69.model.User;
+import com.gmail.psse69.service.ContactService;
+import com.gmail.psse69.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gmail.psse69.service.UserService;
-import com.gmail.psse69.model.User;
+import javax.validation.Valid;
+import java.util.List;
 
 
 @Controller
@@ -19,6 +22,10 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ContactService contactService;
+
 
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
@@ -45,7 +52,7 @@ public class LoginController {
         if (userExists != null) {
             bindingResult
                     .rejectValue("email", "error.user",
-                            "There is already a user registered with the email provided");
+                            "User with this name is exist, please try again with another name :)");
         }
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
@@ -64,11 +71,45 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        modelAndView.addObject("adminMessage","Phone book");
+         List<Contact> contact = contactService.findAll();
+        modelAndView.addObject("userName", "Admin name: " + user.getName()
+                + " " + user.getLastName() + " (" + user.getEmail() + ")");
+        //modelAndView.addObject("adminMessage","Phone book");
+        modelAndView.addObject("contactList", contact);
         modelAndView.setViewName("admin/home");
         return modelAndView;
     }
+
+    @RequestMapping(value="/admin/contact", method = RequestMethod.GET)
+    public ModelAndView newContact(){
+        ModelAndView modelAndView = new ModelAndView();
+        Contact contact = new Contact();
+        modelAndView.addObject("contact", contact);
+        modelAndView.setViewName("admin/contact");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/admin/contact", method = RequestMethod.POST)
+    public ModelAndView createNewContact(@Valid Contact contact, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
+        Contact contactExists = contactService.findByName(contact.getName());
+        if (contactExists != null) {
+            bindingResult
+                    .rejectValue("name", "error.contact",
+                            "Contact with this name is exist, please try again with another name :)");
+        }
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("/admin/contact");
+        } else {
+            contactService.saveContact(contact);
+            modelAndView.addObject("successMessage", "Contact registered successfully");
+            modelAndView.addObject("contact", new Contact());
+            modelAndView.setViewName("/admin/contact");
+
+        }
+        return modelAndView;
+    }
+
 
 
 }
