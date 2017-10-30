@@ -26,8 +26,6 @@ public class LoginController {
     @Autowired
     private ContactService contactService;
 
-
-
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
     public ModelAndView login(){
         ModelAndView modelAndView = new ModelAndView();
@@ -74,42 +72,9 @@ public class LoginController {
          List<Contact> contact = contactService.findAll();
         modelAndView.addObject("userName", "Admin name: " + user.getName()
                 + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        //modelAndView.addObject("adminMessage","Phone book");
         modelAndView.addObject("contactList", contact);
         modelAndView.setViewName("admin/home");
         return modelAndView;
     }
-
-    @RequestMapping(value="/admin/contact", method = RequestMethod.GET)
-    public ModelAndView newContact(){
-        ModelAndView modelAndView = new ModelAndView();
-        Contact contact = new Contact();
-        modelAndView.addObject("contact", contact);
-        modelAndView.setViewName("admin/contact");
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/admin/contact", method = RequestMethod.POST)
-    public ModelAndView createNewContact(@Valid Contact contact, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
-        Contact contactExists = contactService.findByName(contact.getName());
-        if (contactExists != null) {
-            bindingResult
-                    .rejectValue("name", "error.contact",
-                            "Contact with this name is exist, please try again with another name :)");
-        }
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("/admin/contact");
-        } else {
-            contactService.saveContact(contact);
-            modelAndView.addObject("successMessage", "Contact registered successfully");
-            modelAndView.addObject("contact", new Contact());
-            modelAndView.setViewName("/admin/contact");
-
-        }
-        return modelAndView;
-    }
-
-
 
 }

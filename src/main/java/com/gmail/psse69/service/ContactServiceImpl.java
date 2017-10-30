@@ -5,6 +5,7 @@ import com.gmail.psse69.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -24,16 +25,36 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void saveContact(Contact contact) {
-        contact.setName(contact.getName());
-        contact.setCompany(contact.getCompany());
-        contact.setEmail(contact.getEmail());
-        contact.setPhone(contact.getPhone());
-        contact.setHomePhone(contact.getHomePhone());
         contactRepository.save(contact);
     }
 
     @Override
-    public Contact findByName(String name) {
-        return contactRepository.findContactByName(name);
+    public Contact findById(Integer id) {
+       return contactRepository.findById(id);
     }
+
+
+    @Override
+    public Contact findByName(String name) {
+       return contactRepository.findContactByName(name);
+    }
+
+    @Override
+    @ModelAttribute
+    public void updateContact(Contact contact) {
+        Contact updateC = contactRepository.findById(contact.getId());
+        if (updateC != null) {
+            updateC.setName(contact.getName());
+            updateC.setCompany(contact.getCompany());
+            updateC.setPhone(contact.getPhone());
+            updateC.setHomePhone(contact.getHomePhone());
+            updateC.setEmail(contact.getEmail());
+        }
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+         contactRepository.deleteById(id);
+    }
+
 }

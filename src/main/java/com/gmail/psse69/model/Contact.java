@@ -11,7 +11,7 @@ public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     @NotEmpty(message = "*Enter please contact name")
@@ -31,11 +31,11 @@ public class Contact {
     @Email(message = "*Please enter valid email")
     private String email;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

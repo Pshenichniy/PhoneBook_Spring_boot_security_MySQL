@@ -70,19 +70,24 @@
 </head>
 
 <body>
+
+
+<div class="container">
+    <div th:fragment="header">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#" th:href="@{/admin/home}">Home</a>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#" th:href="@{/admin/contact}">Add new contact</a></li>
+                        <li><a href="#" th:href="@{/logout}" method="GET">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
     <div class="container">
-
-
-        <form th:action="@{/logout}" method="get">
-            <button  name="registration"
-                    type="Submit">Logout</button>
-        </form>
-        <br/>
-        <form th:action="@{/admin/contact}" method="get">
-        <form>
-            <button  name="contact"
-                     type="Submit">Add new contact</button>
-        </form>
 
     <div>
         <span th:utext="${userName}"></span>
@@ -107,6 +112,8 @@
                         <th>Phone</th>
                         <th>Home phone</th>
                         <th>Email</th>
+                        <th>Edit contact</th>
+                        <th>Delete contact</th>
                     </tr>
                     <tr th:each="contact : ${contactList}">
                         <td th:text="${contact.id}"/>
@@ -115,13 +122,13 @@
                         <td th:text="${contact.phone}"></td>
                         <td th:text="${contact.homePhone}"></td>
                         <td th:text="${contact.email}"></td>
+                        <td><a th:href="${'edit/' + contact.id}">edit</a></td>
+                        <td><a th:href="${'delete/' + contact.id}">delete</a></td>
                     </tr>
                 </table>
             </div>
         </div>
 
-    </div>
-
-
+</div>
 </body>
 </html>
