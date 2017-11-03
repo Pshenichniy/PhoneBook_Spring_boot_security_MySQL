@@ -1,7 +1,9 @@
 package com.gmail.psse69.service;
 
 import com.gmail.psse69.model.Contact;
+import com.gmail.psse69.model.User;
 import com.gmail.psse69.repository.ContactRepository;
+import com.gmail.psse69.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +19,21 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private ContactRepository contactRepository;
 
+
     @Override
     public List<Contact> findAll() {
         return contactRepository.findAll();
     }
 
 
+    public List<Contact> findByUser(User user) {
+        return contactRepository.findByUser(user);
+    }
+
+
     @Override
-    public void saveContact(Contact contact) {
+    public void saveContact(Contact contact, User user) {
+        contact.setUser(user);
         contactRepository.save(contact);
     }
 

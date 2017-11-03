@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "contact")
@@ -21,7 +22,7 @@ public class Contact {
     private String company;
 
     @Column(name = "phone")
-    @NotEmpty(message = "*Enter please contac phone")
+    @NotEmpty(message = "*Enter please contact phone")
     private String phone;
 
     @Column(name = "homephone")
@@ -30,6 +31,22 @@ public class Contact {
     @Column(name = "email")
     @Email(message = "*Please enter valid email")
     private String email;
+
+
+    @ManyToOne
+    @JoinColumn(name = "useid", nullable = false)
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
+
 
     public Integer getId() {
         return id;

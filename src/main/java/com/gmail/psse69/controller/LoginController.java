@@ -56,9 +56,9 @@ public class LoginController {
             modelAndView.setViewName("registration");
         } else {
             userService.saveUser(user);
-            modelAndView.addObject("successMessage", "User registered successfully");
+//            modelAndView.addObject("successMessage", "User registered successfully");
             modelAndView.addObject("user", new User());
-            modelAndView.setViewName("registration");
+            modelAndView.setViewName("redirect:/admin/home");
 
         }
         return modelAndView;
@@ -69,9 +69,10 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-         List<Contact> contact = contactService.findAll();
-        modelAndView.addObject("userName", "Admin name: " + user.getName()
+         List<Contact> contact = contactService.findByUser(user);
+        modelAndView.addObject("userName", "User name: " + user.getName()
                 + " " + user.getLastName() + " (" + user.getEmail() + ")");
+       // modelAndView.addObject("userId",  "User id: " + user.getId());
         modelAndView.addObject("contactList", contact);
         modelAndView.setViewName("admin/home");
         return modelAndView;

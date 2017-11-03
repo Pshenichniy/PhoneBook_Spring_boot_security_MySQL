@@ -32,8 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${spring.queries.roles-query}")
     private String rolesQuery;
 
-//    @Value("${spring.queries.contacts-query}")
-//    private String contactQuery;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)

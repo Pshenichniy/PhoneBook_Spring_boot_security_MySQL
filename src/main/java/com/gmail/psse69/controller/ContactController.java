@@ -1,8 +1,12 @@
 package com.gmail.psse69.controller;
 
 import com.gmail.psse69.model.Contact;
+import com.gmail.psse69.model.User;
 import com.gmail.psse69.service.ContactService;
+import com.gmail.psse69.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +22,17 @@ public class ContactController {
     @Autowired
     private ContactService contactService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/admin/contact", method = RequestMethod.GET)
     public ModelAndView newContact() {
         ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
         Contact contact = new Contact();
         modelAndView.addObject("contact", contact);
+       // modelAndView.addObject("userId",  "User id: " + user.getId());
         modelAndView.setViewName("admin/contact");
         return modelAndView;
     }
@@ -30,6 +40,8 @@ public class ContactController {
     @RequestMapping(value = "/admin/contact", method = RequestMethod.POST)
     public ModelAndView createNewContact(@Valid Contact contact, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
         Contact contactExists = contactService.findByName(contact.getName());
         if (contactExists != null) {
             bindingResult
@@ -39,7 +51,7 @@ public class ContactController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("/admin/contact");
         } else {
-            contactService.saveContact(contact);
+            contactService.saveContact(contact, user);
             modelAndView.addObject("contact", new Contact());
             modelAndView.setViewName("redirect:/admin/home");
 
@@ -66,11 +78,11 @@ public class ContactController {
     public ModelAndView updateContacts(@Valid Contact contact, BindingResult bindingResult, @PathVariable("id") Integer id) {
         ModelAndView modelAndView = new ModelAndView();
 //        Contact contactExists = contactService.findByName(contact.getName());
-//        if (contactExists != null) {
+//        if (contact == contactExists & contactExists != null) {
 //            bindingResult
 //                    .rejectValue("name", "error.contact",
-//                            "Contact with this name is exist, please try again with another name :)");
-//        }
+//                            "Contact with this name is exist, please try again with another name :)");//       }
+
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("/admin/edit");
         } else {
