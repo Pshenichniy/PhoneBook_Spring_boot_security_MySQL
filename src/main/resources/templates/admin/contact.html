@@ -73,7 +73,7 @@
                         <label	th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"
                                   class="validation-message"></label>
                         <input type="text" th:field="*{phone}"
-                               placeholder="Phone" class="form-control" />
+                               placeholder="Mobile phone in format: +38(0**)1234567" class="form-control" />
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
                         <label	th:if="${#fields.hasErrors('homePhone')}" th:errors="*{homePhone}"
                                   class="validation-message"></label>
                         <input type="text" th:field="*{homePhone}"
-                               placeholder="Home phone" class="form-control" />
+                               placeholder="Home phone in format: (0**)123-45-67" class="form-control" />
                     </div>
                 </div>
 

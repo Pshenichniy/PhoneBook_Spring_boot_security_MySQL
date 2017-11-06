@@ -1,5 +1,6 @@
 package com.gmail.psse69.model;
 
+import com.gmail.psse69.validator.Phone;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -23,9 +24,11 @@ public class Contact {
 
     @Column(name = "phone")
     @NotEmpty(message = "*Enter please contact phone")
+    @Phone(message = "*Enter valid number please in format: +38(0**)1234567")
     private String phone;
 
     @Column(name = "homephone")
+    @Phone(message = "*Enter valid number please in format:(0**)123-45-67")
     private String homePhone;
 
     @Column(name = "email")
