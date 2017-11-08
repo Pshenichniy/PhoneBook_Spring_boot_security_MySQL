@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import java.util.List;
 
 
-@Service("contactService")
+@Service
 @Transactional
 public class ContactServiceImpl implements ContactService {
 
