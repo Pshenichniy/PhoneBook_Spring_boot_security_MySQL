@@ -5,34 +5,46 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import java.util.Set;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "contact")
-public class Contact {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Contact implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @XmlElement
     private Integer id;
 
     @Column(name = "name")
     @NotEmpty(message = "*Enter please contact name")
+    @XmlElement
     private String name;
 
     @Column(name = "company")
+    @XmlElement
     private String company;
 
     @Column(name = "phone")
     @NotEmpty(message = "*Enter please contact phone")
-    @Phone(message = "*Enter valid number please in format: +38(0**)1234567")
+    @Phone(message = "*Enter valid number please in format: +38(XXX)XXX-XX-XX")
+    @XmlElement
     private String phone;
 
-    @Column(name = "homephone")
-    @Phone(message = "*Enter valid number please in format:(0**)123-45-67")
+    @Column(name = "home_phone")
+    @Phone(message = "*Enter valid number please in format:(XXX)XXX-XX-XX")
+    @XmlElement
     private String homePhone;
 
     @Column(name = "email")
     @Email(message = "*Please enter valid email")
+    @XmlElement
     private String email;
 
 
@@ -47,8 +59,6 @@ public class Contact {
     public void setUser(User user) {
         this.user = user;
     }
-
-
 
 
     public Integer getId() {
@@ -97,5 +107,19 @@ public class Contact {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("User: " + getUser());
+        stringBuilder.append("ID: " + getId() + " ");
+        stringBuilder.append("Name: " + getName() + " ");
+        stringBuilder.append("Company: " + getCompany() + " ");
+        stringBuilder.append("Phone: " + getPhone() + " ");
+        stringBuilder.append("Home_phone: " + getHomePhone() + " ");
+        stringBuilder.append("Email: " + getEmail() + " ");
+
+        return stringBuilder.toString();
     }
 }

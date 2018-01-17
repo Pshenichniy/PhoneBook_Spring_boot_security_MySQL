@@ -31,8 +31,10 @@ public class ContactController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         Contact contact = new Contact();
+        modelAndView.addObject("userName", "User name: " + user.getName()
+                + " " + user.getLastName() + " (" + user.getEmail() + ")");
         modelAndView.addObject("contact", contact);
-       // modelAndView.addObject("userId",  "User id: " + user.getId());
+        modelAndView.addObject("userId",  "User id: " + user.getId());
         modelAndView.setViewName("admin/contact");
         return modelAndView;
     }
@@ -68,7 +70,11 @@ public class ContactController {
     @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editContact(@PathVariable Integer id) {
         ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
         Contact contact = contactService.findById(id);
+        modelAndView.addObject("userName", "User name: " + user.getName()
+                + " " + user.getLastName() + " (" + user.getEmail() + ")");
         modelAndView.addObject("contact", contact);
         modelAndView.setViewName("/admin/edit");
         return modelAndView;
@@ -91,7 +97,7 @@ public class ContactController {
 
         }
         return modelAndView;
-
-
     }
+
+
 }

@@ -20,27 +20,30 @@
 
 <body>
 
-<div class="container">
-    <div th:fragment="header">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#" th:href="@{/admin/home}">Home</a>
-                    <ul class="nav navbar-nav">
-                        <li><a href="#" th:href="@{/admin/contact}">Add new contact</a></li>
-                        <li><a href="#" th:href="@{/logout}" method="GET">Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+<div class="navbar navbar-light" style="background-color: #EEEEEE;" th:fragment="header">
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li >
+                <a href="#" th:href="@{/admin/home}">Home</a>
+            </li>
+            <li>
+                <a href="#" th:href="@{/admin/contact}">Add new contact</a>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a th:utext="${userName}"></a>
+            </li>
+            <li>
+                <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">
+                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
+                </a>
+                <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+            </li>
+        </ul>
     </div>
 </div>
-
-
-<div>
-    <span th:utext="${userId}"></span>
-</div>
-<br/>
 
 <div class="container">
     <div class="row">
@@ -73,7 +76,7 @@
                         <label	th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"
                                   class="validation-message"></label>
                         <input type="text" th:field="*{phone}"
-                               placeholder="Mobile phone in format: +38(0**)1234567" class="form-control" />
+                               placeholder="Mobile phone in format: +38(XXX)XXX-XX-XX" class="form-control" />
                     </div>
                 </div>
 
@@ -82,7 +85,7 @@
                         <label	th:if="${#fields.hasErrors('homePhone')}" th:errors="*{homePhone}"
                                   class="validation-message"></label>
                         <input type="text" th:field="*{homePhone}"
-                               placeholder="Home phone in format: (0**)123-45-67" class="form-control" />
+                               placeholder="Home phone in format: (XXX)XXX-XX-XX" class="form-control" />
                     </div>
                 </div>
 

@@ -1,5 +1,6 @@
 package com.gmail.psse69.validator;
 
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -16,7 +17,6 @@ public class PhoneValidator implements ConstraintValidator<Phone, String> {
         if (phoneNumber == null) {
             return false;
         }
-        // \+?([0-9]{2})?\(?[0-9]{3}\)?[0-9]{3}\-?[0-9]{2}\-?[0-9]{2}
         if (phoneNumber.matches("\\d{10}")){ return true;
         }
         else if(phoneNumber.matches("\\+?([0-9]{2})?\\(?[0-9]{3}\\)?[0-9]{7}")) {
@@ -33,8 +33,6 @@ public class PhoneValidator implements ConstraintValidator<Phone, String> {
             return true;
         }
 
-
         else return false;
-
     }
 }

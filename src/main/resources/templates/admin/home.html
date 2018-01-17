@@ -15,6 +15,7 @@
             box-sizing: border-box;
         }
 
+
         .header {
             background-color: #327a81;
             color: white;
@@ -65,33 +66,38 @@
         }
 
     </style>
-
 </head>
 
 <body>
 
+<div class="navbar navbar-light" style="background-color: #EEEEEE;" id="nav" th:fragment="header">
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li >
+                <a href="#" th:href="@{/admin/home}">Home</a>
+            </li>
+            <li>
+                <a href="#" th:href="@{/admin/contact}">Add new contact</a>
+            </li>
+        </ul>
 
-<div class="container">
-    <div th:fragment="header">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#" th:href="@{/admin/home}">Home</a>
-                    <ul class="nav navbar-nav">
-                        <li><a href="#" th:href="@{/admin/contact}">Add new contact</a></li>
-                        <li ><a href="#" th:href="@{/logout}" method="GET">Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a th:utext="${userName}"></a>
+            </li>
+            <li>
+                <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">
+                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
+                </a>
+                <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+            </li>
+        </ul>
     </div>
 </div>
-    <div class="container">
 
-    <div>
-        <span th:utext="${userName}"></span>
-    </div>
-        <br/>
+</div>
+
+    <div class="container">
 
         <div>
             <span th:utext="${userId}"></span>
@@ -102,10 +108,9 @@
         <p class="admin-message-text" th:utext="${adminMessage}"></p>
     </div>
 
+
+
         <div class="table-users">
-
-
-
             <div th:if="${not #lists.isEmpty(contactList)}">
                 <div class="header">Contact list</div>
                 <table cellspacing="0">
@@ -131,6 +136,12 @@
                     </tr>
                 </table>
             </div>
+        </div>
+
+
+        <div th:align="right">
+            <a href="#" th:href="@{/download/json}" class="btn btn-success custom-width">download contacts list in JSON</a>
+            <a href="#" th:href="@{/download/xml}" class="btn btn-primary custom-width">download contacts XML</a>
         </div>
 
 </div>
